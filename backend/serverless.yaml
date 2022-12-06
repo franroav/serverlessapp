@@ -1,0 +1,36 @@
+service: lambda-nest
+
+useDotenv: true
+
+plugins:
+ - serverless-plugin-typescript
+ - serverless-plugin-optimize
+ - serverless-offline
+
+provider:
+  timeout: 30
+  name: aws
+  runtime: nodejs18.x
+  environment:
+    MONGODB_URI: ${env:MONGODB_URI}
+    JWT_SECRET: ${env:JWT_SECRET}
+    JWT_EXPIRATION_TIME: ${env:JWT_EXPIRATION_TIME}
+    SECRET_KEY: ${env:SECRET_KEY}
+    # # COINBASE_CLIENT_ID: ${env:COINBASE_CLIENT_ID}
+    # # COINBASE_CLIENT_SECRET: ${env:COINBASE_CLIENT_SECRET}
+    # # COINBASE_REDIRECT_URI: ${env:COINBASE_REDIRECT_URI}
+
+    # # ENCRYPTION_KEY: ${env:ENCRYPTION_KEY}
+
+    # AUTH_REDIRECT_URI: ${env:AUTH_REDIRECT_URI}
+
+functions:
+  main:
+    handler: src/lambda.handler
+    events:
+      - http:
+          method: ANY
+          path: /
+      - http:
+          method: ANY
+          path: '{proxy+}'
